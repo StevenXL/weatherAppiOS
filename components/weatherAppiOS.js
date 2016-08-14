@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import { Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import Forecast from './Forecast';
 
@@ -35,7 +31,7 @@ class weatherAppiOS extends Component {
       forecast: {
         description: 'few clouds',
         main: 'Clouds',
-        temp: '45.7',
+        temp: 45.7,
       },
     };
 
@@ -43,7 +39,26 @@ class weatherAppiOS extends Component {
   }
 
   handleTextChange(event) {
-    this.setState({ zip: event.nativeEvent.text });
+    const zip = event.nativeEvent.text;
+    this.setState({ zip });
+
+    const url = `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=339bc502e738a05e187a870b4780626d&units=imperial`;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          forecast: {
+            description: responseJson.weather[0].description,
+            main: responseJson.weather[0].main,
+            temp: responseJson.main.temp,
+          },
+        });
+      })
+      .catch((error) => {
+        // NOTE: This has to be handled differently in production
+        throw new Error(error);
+      });
   }
 
   render() {
@@ -65,4 +80,3 @@ class weatherAppiOS extends Component {
 }
 
 export default weatherAppiOS;
-

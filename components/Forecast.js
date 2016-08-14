@@ -35,7 +35,7 @@ const Forecast = ({ description, main, temp }) =>
 Forecast.propTypes = {
   description: React.PropTypes.string.isRequired,
   main: React.PropTypes.string.isRequired,
-  temp: React.PropTypes.string.isRequired,
+  temp: React.PropTypes.number.isRequired,
 };
 
 export default Forecast;
