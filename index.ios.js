@@ -4,7 +4,6 @@
  * @flow
  */
 
-import validator from 'validator';
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -30,7 +29,7 @@ class weatherAppiOS extends Component {
   }
 
   fetchWeather() {
-    let url = `http://api.openweathermap.org/data/2.5/weather?zip=${this.state.zipCode},us&APPID=339bc502e738a05e187a870b4780626d`;
+    let url = `http://api.openweathermap.org/data/2.5/weather?zip=${this.state.zipCode},us&APPID=339bc502e738a05e187a870b4780626d&units=imperial`;
 
     fetch(url)
       .then((response) => response.json())
