@@ -5,6 +5,6 @@
  */
 
 import { AppRegistry } from 'react-native';
-import weatherAppiOS from './weatherAppiOS';
+import weatherAppiOS from './components/weatherAppiOS';
 
 AppRegistry.registerComponent('weatherAppiOS', () => weatherAppiOS);
