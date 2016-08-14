@@ -28,11 +28,7 @@ class weatherAppiOS extends Component {
 
     this.state = {
       zip: '',
-      forecast: {
-        description: 'few clouds',
-        main: 'Clouds',
-        temp: 45.7,
-      },
+      forecast: null,
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
@@ -40,7 +36,7 @@ class weatherAppiOS extends Component {
 
   handleTextChange(event) {
     const zip = event.nativeEvent.text;
-    this.setState({ zip });
+    this.setState({ zip, forecast: null });
 
     const url = `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=339bc502e738a05e187a870b4780626d&units=imperial`;
 
@@ -62,13 +58,25 @@ class weatherAppiOS extends Component {
   }
 
   render() {
+    let forecast;
+
+    if (this.state.forecast) {
+      forecast = <Forecast {...this.state.forecast} />;
+    }
+
+    let welcome;
+
+    if (this.state.zip) {
+      welcome = `You input ${this.state.zip}`;
+    }
+
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          You input {this.state.zip}
+          {welcome}
         </Text>
 
-        <Forecast {...this.state.forecast} />
+        {forecast}
 
         <TextInput
           style={styles.input}
