@@ -10,6 +10,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+  error: {
+    backgroundColor: 'red',
+    color: 'white',
+    fontSize: 20,
+    margin: 10,
+    textAlign: 'center',
+  },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
@@ -27,17 +34,27 @@ class weatherAppiOS extends Component {
     super(props);
 
     this.state = {
-      zip: '',
+      error: null,
       forecast: null,
+      zip: '',
     };
 
     this.handleTextChange = this.handleTextChange.bind(this);
+    this.fetchWeather = this.fetchWeather.bind(this);
   }
 
   handleTextChange(event) {
     const zip = event.nativeEvent.text;
-    this.setState({ zip, forecast: null });
 
+    if (zip.match(/\d{5}/)) {
+      this.setState({ zip, forecast: null, error: null }, this.fetchWeather);
+    } else {
+      this.setState({ error: 'Invalid Input' });
+    }
+  }
+
+  fetchWeather() {
+    const zip = this.state.zip;
     const url = `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&APPID=339bc502e738a05e187a870b4780626d&units=imperial`;
 
     fetch(url)
@@ -58,6 +75,14 @@ class weatherAppiOS extends Component {
   }
 
   render() {
+    let error;
+
+    if (this.state.error) {
+      error = (
+        <Text style={styles.error}>Invalid Input</Text>
+      );
+    }
+
     let forecast;
 
     if (this.state.forecast) {
@@ -72,6 +97,9 @@ class weatherAppiOS extends Component {
 
     return (
       <View style={styles.container}>
+
+        {error}
+
         <Text style={styles.welcome}>
           {welcome}
         </Text>
@@ -79,8 +107,10 @@ class weatherAppiOS extends Component {
         {forecast}
 
         <TextInput
-          style={styles.input}
+          keyboardType="numeric"
+          maxLength={5}
           onSubmitEditing={this.handleTextChange}
+          style={styles.input}
         />
       </View>
     );
